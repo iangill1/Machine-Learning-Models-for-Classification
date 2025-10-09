@@ -1,2 +1,0 @@
-﻿# Machine Learning Assignment 1
-Using Scikit-learn to develop Machine Learning models for Classification tasks
