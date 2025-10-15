@@ -81,7 +81,7 @@ plt.ylim(0,1)
 plt.title("Effect of different C-values on accuracy of SVM")
 plt.legend()
 plt.tight_layout()
-#plt.show()
+plt.show()
 
 
 #manually try different 'gamma' values
@@ -118,5 +118,53 @@ plt.title("Effect of different Gamma values on accuracy of SVM")
 plt.ylim(0,1.05)
 plt.grid(True)
 plt.legend()
+plt.tight_layout()
+plt.show()
+
+
+#manually trying different C-values and gamma values
+gamma_values1 = [0.0001,0.001,0.01,0.1,1]
+c_values1 = [1,10,100,1000,10000]
+print("\n\n")
+print(gamma_values1)
+
+training_accuracy = []
+test_accuracy = []
+
+for g in gamma_values1:
+    training_acc_for_gamma = []
+    test_acc_for_gamma = []
+
+    for c in c_values1:
+
+        svm_gamma = SVC(C=c, gamma=g)
+        svm_gamma.fit(xmatrix_training, ymatrix_training)
+
+        #calculate predictions for training and test dataset
+        training_prediction_gamma = svm_gamma.predict(xmatrix_training)
+        test_prediction_gamma = svm_gamma.predict(xmatrix_test)
+
+        #calculate accuracy of predictions
+        training_acc_for_gamma.append(metrics.accuracy_score(ymatrix_training, training_prediction_gamma))
+        test_acc_for_gamma.append(metrics.accuracy_score(ymatrix_test, test_prediction_gamma))
+
+    training_accuracy.append(training_acc_for_gamma)
+    test_accuracy.append(test_acc_for_gamma)
+
+print(training_accuracy)
+print(test_accuracy)
+
+plt.figure(figsize=(10,6))
+
+for i,g in enumerate(gamma_values1):
+    plt.plot(c_values1, test_accuracy[i], marker='o', label=f'gamma = {g}')
+
+plt.xscale('log')
+plt.ylim(0,1.05)
+plt.xlabel("C-value")
+plt.ylabel("Accuracy")
+plt.title("Accuracy with different C-values and Gamma values on the Test Set")
+plt.legend(title="Gamma values")
+plt.grid(True, which='both', linewidth=0.5)
 plt.tight_layout()
 plt.show()
