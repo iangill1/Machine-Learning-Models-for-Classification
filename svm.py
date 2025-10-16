@@ -7,19 +7,19 @@ independent_cols = ["year", "temp", "humidity", "rainfall", "drought_code", "bui
 dependent_cols = "fire"
 
 #loading in training set with pandas library
-wf_training = pd.read_csv(training_file)
-wf_test = pd.read_csv(test_file)
+df_training = pd.read_csv(training_file)
+df_test = pd.read_csv(test_file)
 #print(ds_training)
 #print(wf_training.shape)
 
 #setting up a matrix for independent variables from training set
-xmatrix_training = wf_training.loc[:, independent_cols]
-xmatrix_test = wf_test.loc[:, independent_cols]
+xmatrix_training = df_training.loc[:, independent_cols]
+xmatrix_test = df_test.loc[:, independent_cols]
 #print(xmatrix_training.head())
 
 #setting up vector for dependent var from training set
-ymatrix_training = wf_training.loc[:, dependent_cols]
-ymatrix_test = wf_test.loc[:, dependent_cols]
+ymatrix_training = df_training.loc[:, dependent_cols]
+ymatrix_test = df_test.loc[:, dependent_cols]
 #print(ymatrix_training.head())
 
 #import SVM package
@@ -130,7 +130,7 @@ print(gamma_values1)
 
 training_accuracy = []
 test_accuracy = []
-
+#for every gamma value, try different C-values
 for g in gamma_values1:
     training_acc_for_gamma = []
     test_acc_for_gamma = []
@@ -138,6 +138,7 @@ for g in gamma_values1:
     for c in c_values1:
 
         svm_gamma = SVC(C=c, gamma=g)
+
         svm_gamma.fit(xmatrix_training, ymatrix_training)
 
         #calculate predictions for training and test dataset
@@ -154,6 +155,7 @@ for g in gamma_values1:
 print(training_accuracy)
 print(test_accuracy)
 
+#plot results of accuracy of C-values using different gamma values
 plt.figure(figsize=(10,6))
 
 for i,g in enumerate(gamma_values1):
