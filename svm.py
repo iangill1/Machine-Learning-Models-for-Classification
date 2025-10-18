@@ -3,7 +3,8 @@ import pandas as pd
 #wildfire datasets
 training_file = "wildfires_training.csv"
 test_file = "wildfires_test.csv"
-independent_cols = ["year", "temp", "humidity", "rainfall", "drought_code", "buildup_index", "day", "month", "wind_speed"]
+independent_cols = ["year", "temp", "humidity", "rainfall", "drought_code", "buildup_index", "day", "month",
+                    "wind_speed"]
 dependent_cols = "fire"
 
 #loading in training set with pandas library
@@ -25,6 +26,7 @@ ymatrix_test = df_test.loc[:, dependent_cols]
 #import SVM package
 from sklearn import metrics
 from sklearn.svm import SVC
+
 #create a model and use default values for hyperparameters first
 svm = SVC(C=1.0, gamma='scale')
 svm.fit(xmatrix_training, ymatrix_training)
@@ -42,7 +44,7 @@ print("\ntraining set accuracy with default hyperparameters: ", training_accurac
 print("test set accuracy with default hyperparameters: ", test_accuracy)
 
 #manually try different 'C' values first
-c_values = [1,10,100,1000,10000,100000,1000000,10000000,100000000,1000000000]
+c_values = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 print("\n\n")
 print(c_values)
 
@@ -70,22 +72,21 @@ import numpy as np
 
 x = np.arange(len(c_values))
 width = 0.4
-plt.figure(figsize=(10,6))
-plt.bar(x - width/2, training_accuracy_c, width, label='Training accuracy')
-plt.bar(x + width/2, test_accuracy_c, width, label='Test accuracy')
+plt.figure(figsize=(10, 6))
+plt.bar(x - width / 2, training_accuracy_c, width, label='Training accuracy')
+plt.bar(x + width / 2, test_accuracy_c, width, label='Test accuracy')
 
 plt.xticks(x, c_values, rotation=45)
 plt.xlabel("C-value")
 plt.ylabel("Accuracy")
-plt.ylim(0,1)
+plt.ylim(0, 1)
 plt.title("Effect of different C-values on accuracy of SVM")
 plt.legend()
 plt.tight_layout()
 plt.show()
 
-
 #manually try different 'gamma' values
-gamma_values = [0.0001,0.001,0.01,0.1,1,10,100,1000]
+gamma_values = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
 print("\n\n")
 print(gamma_values)
 
@@ -107,7 +108,7 @@ for g in gamma_values:
 print(training_accuracy_gamma)
 print(test_accuracy_gamma)
 
-plt.figure(figsize=(8,6))
+plt.figure(figsize=(8, 6))
 plt.plot(gamma_values, training_accuracy_gamma, marker='o', label='Training accuracy')
 plt.plot(gamma_values, test_accuracy_gamma, marker='s', label='Test accuracy')
 
@@ -115,16 +116,15 @@ plt.xscale('log')
 plt.xlabel("Gamma value")
 plt.ylabel("Accuracy")
 plt.title("Effect of different Gamma values on accuracy of SVM")
-plt.ylim(0,1.05)
+plt.ylim(0, 1.05)
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
 
-
 #manually trying different C-values and gamma values
-gamma_values1 = [0.0001,0.001,0.01,0.1,1]
-c_values1 = [1,10,100,1000,10000]
+gamma_values1 = [0.0001, 0.001, 0.01, 0.1, 1]
+c_values1 = [1, 10, 100, 1000, 10000]
 print("\n\n")
 print(gamma_values1)
 
@@ -136,7 +136,6 @@ for g in gamma_values1:
     test_acc_for_gamma = []
 
     for c in c_values1:
-
         svm_gamma = SVC(C=c, gamma=g)
 
         svm_gamma.fit(xmatrix_training, ymatrix_training)
@@ -156,13 +155,13 @@ print(training_accuracy)
 print(test_accuracy)
 
 #plot results of accuracy of C-values using different gamma values
-plt.figure(figsize=(10,6))
+plt.figure(figsize=(10, 6))
 
-for i,g in enumerate(gamma_values1):
+for i, g in enumerate(gamma_values1):
     plt.plot(c_values1, test_accuracy[i], marker='o', label=f'gamma = {g}')
 
 plt.xscale('log')
-plt.ylim(0,1.05)
+plt.ylim(0, 1.05)
 plt.xlabel("C-value")
 plt.ylabel("Accuracy")
 plt.title("Accuracy with different C-values and Gamma values on the Test Set")

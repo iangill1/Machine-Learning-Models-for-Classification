@@ -3,13 +3,13 @@ import pandas as pd
 #wildfire datasets
 training_file = "wildfires_training.csv"
 test_file = "wildfires_test.csv"
-independent_cols = ["year", "temp", "humidity", "rainfall", "drought_code", "buildup_index", "day", "month", "wind_speed"]
+independent_cols = ["year", "temp", "humidity", "rainfall", "drought_code", "buildup_index", "day", "month",
+                    "wind_speed"]
 dependent_cols = "fire"
 
 #loading in training set with pandas library
 wf_training = pd.read_csv(training_file)
 wf_test = pd.read_csv(test_file)
-
 
 #setting up a matrix for independent variables from training set
 xmatrix_training = wf_training.loc[:, independent_cols]
@@ -37,9 +37,8 @@ test_prediction_accuracy = metrics.accuracy_score(ymatrix_test, test_prediction)
 print("\ntraining set accuracy with default parameters: ", training_prediction_accuracy)
 print("test set accuracy with default parameters: ", test_prediction_accuracy)
 
-
 #try different C-values
-c_values = [0.00001,0.0001,0.001,0.1,1,10,100,1000,10000,100000,10000000,100000000]
+c_values = [0.00001, 0.0001, 0.001, 0.1, 1, 10, 100, 1000, 10000, 100000, 10000000, 100000000]
 print("\n\n")
 print(c_values)
 
@@ -101,7 +100,7 @@ print(training_accuracy_penalty)
 print(test_accuracy_penalty)
 
 #tuning both hyperparameters for better results
-c_values1 = [0.01,1,10,100]
+c_values1 = [0.01, 1, 10, 100]
 penalty1 = ['l1', 'l2', 'elasticnet', None]
 
 print("\n\n")
@@ -132,7 +131,7 @@ for c in c_values1:
 
         lr.fit(xmatrix_training, ymatrix_training)
 
-        #calculate plrediction
+        #calculate prediction
         training_prediction_for_c = lr.predict(xmatrix_training)
         test_prediction_for_c = lr.predict(xmatrix_test)
 
@@ -148,18 +147,18 @@ print(test_accuracy)
 
 #plot results
 import matplotlib.pyplot as plt
-plt.figure(figsize=(10,6))
 
-for i,g in enumerate(penalty1):
-    plt.plot(c_values1, training_accuracy[i], marker='o', label=f'penalty = {g}')
+plt.figure(figsize=(10, 6))
+
+for i, g in enumerate(penalty1):
+    plt.plot(c_values1, test_accuracy[i], marker='o', label=f'penalty = {g}')
 
 plt.xscale('log')
-plt.ylim(0,1.05)
+plt.ylim(0, 1.05)
 plt.xlabel("C-value")
 plt.ylabel("Accuracy")
-plt.title("Accuracy with different C-values and Penalty values on the Training Set")
+plt.title("Accuracy with different C-values and Penalty values on the Test Set")
 plt.legend(title="Penalty values")
 plt.grid(True, which='both', linewidth=0.5)
 plt.tight_layout()
 plt.show()
-
